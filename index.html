@@ -3,74 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>白銀即時報價系統</title>
+    <title>誠弘貴金屬 - 實體白銀交易平台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-50">
-    <div class="bg-slate-800 text-white py-2 overflow-hidden">
-        <div class="container mx-auto px-4 text-sm flex justify-center space-x-8">
-            <span>國際銀價 (XAG/TWD)：<span id="spot-price">讀取中...</span></span>
+<body class="bg-slate-50 font-sans">
+
+    <div class="bg-slate-900 text-white py-2">
+        <div class="container mx-auto px-4 text-xs md:text-sm text-center tracking-widest">
+            國際白銀現貨行情：<span id="spot-price" class="font-mono text-yellow-400">連線中...</span> (TWD/oz)
         </div>
     </div>
 
-    <nav class="bg-white shadow-md p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-slate-700">雲林實體白銀交易</h1>
-            <a href="#quote-form" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">取得今日報價</a>
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="shield-check" class="text-blue-600"></i>
+                <span class="text-xl font-bold text-slate-800 tracking-tight">誠弘貴金屬</span>
+            </div>
+            <a href="#inquiry" class="text-sm border-2 border-slate-800 px-4 py-1 rounded-full hover:bg-slate-800 hover:text-white transition">立即詢價</a>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 py-12">
-        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-blue-500 text-center">
-                <h2 class="text-gray-500 font-medium">門市賣出參考價 (盎司)</h2>
-                <div id="sell-price" class="text-5xl font-black my-4 text-slate-800">---</div>
-                <p class="text-xs text-gray-400">依據國際盤價 + 溢價計算</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-500 text-center">
-                <h2 class="text-gray-500 font-medium">門市回購參考價 (盎司)</h2>
-                <div id="buy-price" class="text-5xl font-black my-4 text-slate-800">---</div>
-                <p class="text-xs text-gray-400">高價回購實體銀條/銀幣</p>
+    <header class="bg-white py-16 border-b">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">實體白銀投資・專業回購</h2>
+            <p class="text-slate-500 max-w-xl mx-auto mb-10">提供 1kg 投資型銀條、各國銀幣交易，價格透明，雲林在地誠信服務。</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="bg-slate-800 text-white p-8 rounded-3xl shadow-xl">
+                    <h3 class="text-slate-400 text-sm mb-2">今日實體賣出價 (每公斤)</h3>
+                    <div id="sell-price-kg" class="text-4xl md:text-5xl font-black text-white mb-2">---</div>
+                    <div class="inline-block bg-white/10 px-3 py-1 rounded text-xs text-slate-300">含稅與進口溢價</div>
+                </div>
+                <div class="bg-white border-2 border-slate-800 p-8 rounded-3xl shadow-xl">
+                    <h3 class="text-slate-500 text-sm mb-2">今日實體回收價 (每公斤)</h3>
+                    <div id="buy-price-kg" class="text-4xl md:text-5xl font-black text-slate-900 mb-2">---</div>
+                    <div class="inline-block bg-slate-100 px-3 py-1 rounded text-xs text-slate-500">高價現金回購</div>
+                </div>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div id="quote-form" class="container mx-auto px-4 py-12 max-w-2xl">
-        <div class="bg-white p-8 rounded-2xl shadow-xl">
-            <h3 class="text-2xl font-bold mb-6 text-center text-slate-700">即時詢價單</h3>
-            <form action="https://formspree.io/f/[YOUR_FORMSPREE_ID]" method="POST" class="space-y-4">
-                <input type="text" name="name" placeholder="您的姓名" class="w-full p-3 border rounded-lg" required>
-                <input type="tel" name="phone" placeholder="聯絡電話" class="w-full p-3 border rounded-lg" required>
-                <select name="type" class="w-full p-3 border rounded-lg">
-                    <option>預計購買 (銀條/銀幣)</option>
-                    <option>預計出售 (實體回收)</option>
-                </select>
-                <textarea name="message" placeholder="備註需求（如：預計交易數量）" class="w-full p-3 border rounded-lg" rows="4"></textarea>
-                <button type="submit" class="w-full bg-slate-800 text-white py-4 rounded-lg font-bold hover:bg-slate-900 transition">送出並索取鎖定報價</button>
-            </form>
+    <section id="inquiry" class="py-20 bg-slate-50">
+        <div class="container mx-auto px-4 max-w-xl">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border">
+                <h3 class="text-2xl font-bold mb-6 text-slate-800 flex items-center">
+                    <i data-lucide="mail" class="mr-2"></i> 索取即時報價
+                </h3>
+                <form action="https://formspree.io/f/[YOUR_FORMSPREE_ID]" method="POST" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" name="name" placeholder="姓名" class="w-full p-3 border rounded-xl" required>
+                        <input type="tel" name="phone" placeholder="電話" class="w-full p-3 border rounded-xl" required>
+                    </div>
+                    <select name="service" class="w-full p-3 border rounded-xl bg-gray-50">
+                        <option>我想購買 1kg 銀條</option>
+                        <option>我想賣出 (實體回收)</option>
+                        <option>其他產品詢價</option>
+                    </select>
+                    <textarea name="message" placeholder="請問您預計交易的數量？" class="w-full p-3 border rounded-xl" rows="4"></textarea>
+                    <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-blue-600 transition duration-300">提交詢價，專人回覆</button>
+                </form>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <footer class="py-10 text-center text-slate-400 text-sm">
+        <p>© 2026 誠弘貴金屬 - 實體白銀交易專門</p>
+        <p class="mt-2 text-xs">投資有風險，實體買賣請以門市最終報價為準</p>
+    </footer>
 
     <script>
-        async function fetchSilverPrice() {
-            // ⚠️ 請將下方的 [YOUR_GOLDAPI_KEY] 換成你的 API Key
+        lucide.createIcons();
+
+        async function updateSilverData() {
+            // ⚠️ 請換上你的 GoldAPI Key
             const apiKey = "[YOUR_GOLDAPI_KEY]";
+            const ozToKg = 32.1507; // 1公斤等於 32.1507 盎司
+
             try {
                 const response = await fetch("https://www.goldapi.io/api/XAG/TWD", {
                     headers: { "x-access-token": apiKey, "Content-Type": "application/json" }
                 });
                 const data = await response.json();
-                const price = data.price;
+                const priceOz = data.price; // 每盎司台幣價格
+                const priceKg = priceOz * ozToKg; // 轉換為每公斤價格
                 
-                document.getElementById('spot-price').innerText = `NT$ ${price.toFixed(2)}`;
-                document.getElementById('sell-price').innerText = `NT$ ${Math.round(price + 150)}`;
-                document.getElementById('buy-price').innerText = `NT$ ${Math.round(price - 50)}`;
+                // 這裡你可以自行調整溢價 (Premium)
+                const sellPremiumPerKg = 3500; // 每公斤預計賺取/工費
+                const buyDiscountPerKg = 1000; // 回收時低於盤價的金額
+
+                document.getElementById('spot-price').innerText = `${priceOz.toFixed(2)}`;
+                document.getElementById('sell-price-kg').innerText = `NT$ ${Math.round(priceKg + sellPremiumPerKg).toLocaleString()}`;
+                document.getElementById('buy-price-kg').innerText = `NT$ ${Math.round(priceKg - buyDiscountPerKg).toLocaleString()}`;
             } catch (e) {
                 console.error("報價讀取失敗");
             }
         }
-        fetchSilverPrice();
+        updateSilverData();
     </script>
 </body>
 </html>
