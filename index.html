@@ -23,7 +23,9 @@
                 <i data-lucide="shield-check" class="text-blue-600"></i>
                 <span class="text-xl font-bold text-slate-800 tracking-tight">展誠弘貴金屬</span>
             </div>
-            <a href="#inquiry" class="text-sm border-2 border-slate-800 px-4 py-1 rounded-full hover:bg-slate-800 hover:text-white transition">立即詢價</a>
+            <a href="#contact" class="text-sm bg-[#06C755] text-white px-4 py-1.5 rounded-full hover:bg-[#05b34c] transition flex items-center shadow-md">
+                <i data-lucide="message-circle" class="w-4 h-4 mr-1"></i> LINE 詢價
+            </a>
         </div>
     </nav>
 
@@ -60,7 +62,9 @@
                 <div class="bg-white border-2 border-slate-800 p-8 rounded-3xl shadow-xl relative overflow-hidden flex flex-col justify-center items-center">
                     <h3 class="text-slate-500 text-sm mb-2">今日實體回收價 (每公斤)</h3>
                     <div class="text-4xl md:text-5xl font-black text-slate-900 mb-2">請私訊洽詢</div>
-                    <div class="inline-block bg-slate-100 px-3 py-1 rounded text-xs text-slate-500">高價現金回購</div>
+                    <a href="#contact" class="inline-block bg-slate-100 px-3 py-1 rounded text-xs text-slate-500 hover:bg-slate-200 transition">
+                        點擊加入 LINE 詢價
+                    </a>
                 </div>
             </div>
         </div>
@@ -97,25 +101,28 @@
         </div>
     </section>
 
-    <section id="inquiry" class="py-20 bg-white">
-        <div class="container mx-auto px-4 max-w-xl">
-            <div class="bg-slate-50 p-8 rounded-2xl shadow-inner border">
-                <h3 class="text-2xl font-bold mb-6 text-slate-800 flex items-center justify-center">
-                    <i data-lucide="mail" class="mr-2"></i> 聯絡我們 / 搶訂現貨
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4 max-w-xl text-center">
+            <div class="bg-slate-50 p-10 rounded-3xl shadow-lg border border-slate-200">
+                <h3 class="text-2xl font-bold mb-4 text-slate-800 flex items-center justify-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" class="w-8 h-8 mr-2" alt="LINE Icon">
+                    LINE 官方帳號線上諮詢
                 </h3>
-                <form action="https://formspree.io/f/[YOUR_FORMSPREE_ID]" method="POST" class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" name="name" placeholder="您的稱呼" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-slate-800" required>
-                        <input type="tel" name="phone" placeholder="聯絡電話" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-slate-800" required>
-                    </div>
-                    <select name="service" class="w-full p-3 border rounded-xl bg-white outline-none focus:ring-2 focus:ring-slate-800">
-                        <option>我想購買 1kg 銀條 (現貨/預購)</option>
-                        <option>我想賣出 (實體回收)</option>
-                        <option>其他產品詢價</option>
-                    </select>
-                    <textarea name="message" placeholder="請告訴我們您需要的數量..." class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-slate-800" rows="4"></textarea>
-                    <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition duration-300 shadow-lg">送出詢價單</button>
-                </form>
+                
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    請直接掃描 QR Code 或點擊下方按鈕加入好友。<br>
+                    告知我們您需要的數量，將由專人為您鎖定價格與保留現貨。
+                </p>
+
+                <div class="bg-white p-2 rounded-xl inline-block shadow-sm mb-8 border border-slate-100">
+                    <img src="line-qr.png" alt="請上傳您的 QR Code 並命名為 line-qr.png" class="w-48 h-48 object-contain rounded-lg">
+                </div>
+
+                <a href="https://lin.ee/sr1rRq6" target="_blank" class="block w-full bg-[#06C755] text-white text-xl font-bold py-4 rounded-xl hover:bg-[#05b34c] transition shadow-lg flex items-center justify-center animate-bounce">
+                    <i data-lucide="user-plus" class="mr-2"></i> 點擊加入好友詢價
+                </a>
+                
+                <p class="mt-4 text-xs text-slate-400">點擊上方按鈕即可直接跳轉至 LINE App</p>
             </div>
         </div>
     </section>
@@ -134,11 +141,11 @@
         lucide.createIcons();
 
         async function updateSilverData() {
-            // API 金鑰
+            // API 金鑰 (僅用於顯示頂部國際參考價)
             const apiKey = "goldapi-j3j7smkuk8nbm-io";
             
             try {
-                // 抓取價格更新頂部小字
+                // 抓取國際白銀價格 (XAG)
                 const response = await fetch("https://www.goldapi.io/api/XAG/USD", {
                     headers: { "x-access-token": apiKey, "Content-Type": "application/json" }
                 });
@@ -146,6 +153,7 @@
                 if (!response.ok) throw new Error("API Error");
                 const data = await response.json();
                 
+                // 僅更新頂部的國際小字
                 document.getElementById('spot-price-display').innerText = `${data.price.toFixed(2)}`;
                 
             } catch (e) {
