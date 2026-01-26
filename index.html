@@ -128,33 +128,32 @@
         lucide.createIcons();
 
         async function updateSilverData() {
-            // ⚠️ 這裡一定要換成你在 GoldAPI 申請的 API Key
-            const apiKey = "[YOUR_GOLDAPI_KEY]";
+            // ✅ 你的專屬 API 金鑰已經設定好
+            const apiKey = "goldapi-j3j7smkuk8nbm-io";
             
-            // 顯示載入中
+            // 顯示載入中動畫
             document.getElementById('sell-price-kg').innerText = "計算中...";
             document.getElementById('sell-price-kg').classList.add("animate-pulse");
 
             try {
                 // 1. 抓取國際白銀價格 (XAG) 對 美金 (USD)
-                // 注意：你提到「黃金報價」，但因網站是白銀交易，這裡使用白銀代碼 XAG，若需黃金請改 XAU
                 const response = await fetch("https://www.goldapi.io/api/XAG/USD", {
                     headers: { "x-access-token": apiKey, "Content-Type": "application/json" }
                 });
                 
-                if (!response.ok) throw new Error("API Limit Reached or Error");
+                if (!response.ok) throw new Error("API Error");
 
                 const data = await response.json();
                 
                 // 2. 你的指定公式：(國際價 + 10) * 32 * 32
-                const spotPriceUsd = data.price; // 國際現貨價
-                const premiumUsd = 10;           // 加上 10 美金
-                const rate = 32;                 // 匯率 32
-                const weight = 32;               // 重量換算 32
+                const spotPriceUsd = data.price; 
+                const premiumUsd = 10;           
+                const rate = 32;                 
+                const weight = 32;               
 
                 const finalPriceKg = (spotPriceUsd + premiumUsd) * rate * weight;
                 
-                // 3. 回收價設定 (範例：賣出價 - 3000元)
+                // 3. 回收價設定 (目前設定為賣出價 - 3000元)
                 const buyPriceKg = finalPriceKg - 3000;
 
                 // 4. 更新畫面
@@ -167,14 +166,11 @@
                 
             } catch (e) {
                 console.error("報價讀取失敗", e);
-                document.getElementById('sell-price-kg').innerText = "請點擊更新";
-                document.getElementById('buy-price-kg').innerText = "請點擊更新";
-                alert("目前無法取得即時報價，可能是 API 額度已滿，請直接聯繫我們。");
+                alert("目前無法取得即時報價 (可能是 API 額度已滿或連線問題)，請直接聯繫我們。");
+                document.getElementById('sell-price-kg').innerText = "請洽詢";
+                document.getElementById('buy-price-kg').innerText = "請洽詢";
             }
         }
-        
-        // 頁面載入時先執行一次
-        updateSilverData();
     </script>
 </body>
 </html>
